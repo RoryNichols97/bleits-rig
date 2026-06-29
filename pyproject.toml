@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bleits-rig"
+version = "0.1.0"
+description = "Simple Python control of a BLE Interruption Test Stand over SSH"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{ name = "Sava Health" }]
+# No third-party dependencies: uses the system `ssh` command.
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
