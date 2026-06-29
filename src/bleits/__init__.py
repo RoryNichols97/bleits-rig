@@ -1,5 +1,5 @@
 """
-bleits — simple control of a BLE Interruption Test Stand.
+bleits - simple control of a BLE Interruption Test Stand.
 
     from bleits import Interrupter
 
@@ -9,7 +9,8 @@ bleits — simple control of a BLE Interruption Test Stand.
 """
 
 from .rig import Interrupter
+from .manual import manual_session
 from .errors import RigError, RigConnectionError, RigCommandError
 
-__all__ = ["Interrupter", "RigError", "RigConnectionError", "RigCommandError"]
+__all__ = ["Interrupter", "manual_session", "RigError", "RigConnectionError", "RigCommandError"]
 __version__ = "0.1.0"

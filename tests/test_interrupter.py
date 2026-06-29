@@ -115,4 +115,10 @@ def test_errors_are_rigerror_subclasses():
 def test_transport_control_path_is_per_target():
     a = SSHTransport("host-a", "sava")
     b = SSHTransport("host-b", "sava")
-    assert a._control_path != b._control_path
+    if a._multiplex:
+        # On macOS/Linux each target gets its own control socket path.
+        assert a._control_path != b._control_path
+    else:
+        # On Windows multiplexing is disabled, so there's no control path.
+        assert a._control_path is None
+
