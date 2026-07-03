@@ -66,3 +66,21 @@ def test_crash_midrun_still_leaves_on():
     itp = make(fake)
     with pytest.raises(RigError):
         itp.run_pattern(off_s=1, on_s=1, cycles=10, verbose=False)
+
+
+def test_log_file_written(monkeypatch, tmp_path):
+    itp = make()
+    log = tmp_path / "run.log"
+    itp.run_pattern(off_s=1, on_s=1, cycles=2, verbose=False, log_file=str(log))
+    assert log.exists()
+    text = log.read_text()
+    assert "RF OFF" in text and "RF ON" in text
+    assert "run_pattern start" in text
+    assert "2 cycles completed" in text
+
+
+def test_no_log_by_default(monkeypatch, tmp_path):
+    itp = make()
+    n = itp.run_pattern(off_s=1, on_s=1, cycles=2, verbose=False)
+    assert n == 2
+    assert list(tmp_path.iterdir()) == []
