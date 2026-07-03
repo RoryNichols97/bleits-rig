@@ -43,7 +43,7 @@ def my_big_test():
 
 `disconnected()` turns RF off for the block and **guarantees it back on
 afterwards, even if your code raises**. This is the recommended way to wrap a
-step, because a failure can't leave the rig stuck disconnected for the rest of
+step, because a failure can''t leave the rig stuck disconnected for the rest of
 your run or the next person.
 
 ```python
@@ -63,7 +63,7 @@ with rig.disconnected():
 ## 3. Inside a pytest suite (as a fixture)
 
 If you write tests in pytest, expose the rig as a fixture so every test can use
-it and it's always cleaned up:
+it and it''s always cleaned up:
 
 ```python
 import pytest
@@ -101,6 +101,14 @@ rig.run_pattern(off_s=10, on_s=10, cycles=20)     # 20 cycles of 10s off / 10s o
 rig.run_pattern(off_s=40, on_s=40, duration_s=3600)
 ```
 
+To keep a log of the run for post-analysis, pass `log_file`. Every transition
+is written with a millisecond timestamp (the same style as the Pi-side logs,
+so it correlates with the companion app''s log). Omit it and no log is written:
+
+```python
+rig.run_pattern(off_s=10, on_s=10, cycles=20, log_file="run1.log")
+```
+
 This loops on your machine, so it ties up your script for the duration and
 stops if your machine sleeps. For long unattended runs, hand a profile to the
 Pi instead (next section).
@@ -130,14 +138,14 @@ rig.stop_pattern()      # end it early and leave the rig safe
 ## Things to know
 
 - **One rig per object.** Running several rigs is just several Interrupters:
-  `Interrupter("rig-a")`, `Interrupter("rig-b")`. They're independent.
-- **No locking yet.** If two programs drive the same rig at once they'll fight
+  `Interrupter("rig-a")`, `Interrupter("rig-b")`. They''re independent.
+- **No locking yet.** If two programs drive the same rig at once they''ll fight
   over the switch. For now, coordinate so one test uses a rig at a time.
-- **Errors are typed.** Catch `RigConnectionError` (can't reach the rig) or the
+- **Errors are typed.** Catch `RigConnectionError` (can''t reach the rig) or the
   base `RigError` (anything rig-related) if you want to handle failures
   gracefully in a larger suite:
 
-  ```python
+```python
   from bleits import Interrupter, RigError
 
   try:
@@ -145,4 +153,4 @@ rig.stop_pattern()      # end it early and leave the rig safe
       rig.rf_off()
   except RigError as e:
       skip_or_flag_test(f"rig unavailable: {e}")
-  ```
+```
