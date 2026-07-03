@@ -15,7 +15,7 @@
 #   off = BLE blocked  = IR emitter ON  = RF path broken
 #
 # Hardware mapping (current rig): active_low = false,
-#   so IR ON = GPIO HIGH, IR OFF = GPIO LOW.
+#   verified on rig: on = GPIO HIGH = BLE allowed; off = GPIO LOW = BLE blocked.
 # ============================================================
 
 set -euo pipefail
@@ -23,8 +23,8 @@ set -euo pipefail
 PIN=17
 
 case "${1:-}" in
-  on)  LEVEL=dl ;;   # BLE allowed -> IR off -> drive GPIO low
-  off) LEVEL=dh ;;   # BLE blocked -> IR on  -> drive GPIO high
+  on)  LEVEL=dh ;;   # BLE allowed -> drive GPIO high
+  off) LEVEL=dl ;;   # BLE blocked -> drive GPIO low
   *)
     echo "usage: rf_switch.sh on|off" >&2
     exit 2
